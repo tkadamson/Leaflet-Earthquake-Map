@@ -13,6 +13,23 @@ const myMap = L.map("map", {
     accessToken: API_KEY
   }).addTo(myMap);
 
+  function markercolor(earthquake) {
+    
+    if (earthquake.geometry.coordinates[2] < 20) {
+        fill = "rgb(255, 153, 153)"
+      } else if (earthquake.geometry.coordinates[2] < 40) {
+          fill = "rgb(255, 102, 102)"
+      } else if (earthquake.geometry.coordinates[2] < 60) {
+        fill = "rgb(255, 51, 51)"
+      } else if (earthquake.geometry.coordinates[2] < 80) {
+        fill = "rgb(255, 0, 0)"
+      } else {
+          fill = "rgb(204, 0, 0)"
+      };
+      
+    return fill
+  };
+
   d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").then(earthquakeData => {
     console.log(earthquakeData);
 
@@ -25,14 +42,35 @@ const myMap = L.map("map", {
 
         magnitude = earthquake.properties.mag
 
-        console.log(magnitude);
+        //console.log(magnitude);
 
         L.circle(coordinates,  {
             fillOpacity: 0.75,
             color: "white",
-            fillColor: "purple",
+            fillColor: markercolor(earthquake),
             radius: magnitude * 200000
-        }).addTo(myMap);
+        }).bindPopup("<h2>" + earthquake.properties.place  + "</h2> <hr> <h3> Magnitude: " + earthquake.properties.mag + "<br> USGIS ID: " + earthquake.id + " </h3> <h5> More info at: " + earthquake.properties.url + "</h5>").addTo(myMap);
     };
+
+    const legend = L.control({ position: "bottomleft" });
+    legend.onAdd = function() {
+    let div = L.DomUtil.create("div", "info legend");
+        let limits = [0, 20, 40, 60, "80+"];
+        let colors = ["rgb(255, 153, 153)", "rgb(255, 102, 102)", "rgb(255, 51, 51)", "rgb(255, 0, 0)", "rgb(204, 0, 0)"];
+        let labels = [];
+        
+        const legendInfo = "<h3>Earthquake Depth (in Kilometers)</h3>";
+    
+        div.innerHTML = legendInfo;
+    
+        limits.forEach(function(limit, index) {
+        labels.push("<li style=\"background-color: " + colors[index] + "\">" + limit + "</li>");
+        });
+    
+        div.innerHTML += "<ul>" + labels.join("") + "</ul>";
+        return div;
+    };
+     // Adding legend to the map
+     legend.addTo(myMap);
   });
 
