@@ -13,3 +13,26 @@ const myMap = L.map("map", {
     accessToken: API_KEY
   }).addTo(myMap);
 
+  d3.json("https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson").then(earthquakeData => {
+    console.log(earthquakeData);
+
+    for (let i = 0; i < earthquakeData.features.length; i++) {
+        earthquake = earthquakeData.features[i];
+
+        coordinates = [earthquake.geometry.coordinates[1], earthquake.geometry.coordinates[0]]
+
+        //console.log(coordinates);
+
+        magnitude = earthquake.properties.mag
+
+        console.log(magnitude);
+
+        L.circle(coordinates,  {
+            fillOpacity: 0.75,
+            color: "white",
+            fillColor: "purple",
+            radius: magnitude * 200000
+        }).addTo(myMap);
+    };
+  });
+
