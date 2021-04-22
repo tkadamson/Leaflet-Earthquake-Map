@@ -48,7 +48,7 @@ const myMap = L.map("map", {
             fillOpacity: 0.75,
             color: "white",
             fillColor: markercolor(earthquake),
-            radius: magnitude * 200000
+            radius: magnitude * 175000
         }).bindPopup("<h2>" + earthquake.properties.place  + "</h2> <hr> <h3> Magnitude: " + earthquake.properties.mag + "<br> USGIS ID: " + earthquake.id + " </h3> <h5> More info at: " + earthquake.properties.url + "</h5>").addTo(myMap);
     };
 
@@ -67,7 +67,7 @@ const myMap = L.map("map", {
         labels.push("<li style=\"background-color: " + colors[index] + "\">" + limit + "</li>");
         });
     
-        div.innerHTML += "<ul>" + labels.join("") + "</ul>";
+        div.innerHTML += "<ul style='list-style-type: none'>" + labels.join("") + "</ul>";
         return div;
     };
      // Adding legend to the map
