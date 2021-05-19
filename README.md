@@ -1,8 +1,10 @@
-# hw14-leaflet-earthquakes
+# Leaflet-Earthquake-Map
 
-## Solution Explanation | GRADE: -
+### Summary | GRADE: A
 
 For this assignment, I used leaflet to generate a map with bubbles indicating earthquakes recorded by the USGS in the last 7 days. The bubbles are sized relative to the magnitude and the color indicates the depth. 
+
+### Projecxt Writeup
 
 First I used leaflet to generate a world map, centered roughtly on the US and zoomed out to capture most of the map. The tile layer is set through mapbox.
 
